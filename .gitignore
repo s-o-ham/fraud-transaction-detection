@@ -1,0 +1,27 @@
+# Ignore sensitive configuration files
+config.properties
+
+# Backend compiled files
+Backend/*.class
+
+# Frontend build and dependencies
+Frontend/node_modules/
+Frontend/dist/
+Frontend/.env
+Frontend/.env.local
+Frontend/.env.production
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
