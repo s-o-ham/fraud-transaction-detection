@@ -4,10 +4,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #0a0b2e 0%, #1a1b5e 25%, #2d1b69 50%, #4a1c4f 75%, #661836 100%);
-  background-attachment: fixed;
+  background: linear-gradient(135deg, #0a0514 0%, #1a0b2e 25%, #2d1b69 50%, #4a1c4f 75%, #1a0b2e 100%);
   padding: 20px;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Arial", sans-serif;
   position: relative;
   overflow: hidden;
 }
@@ -21,73 +20,87 @@
   right: 0;
   bottom: 0;
   background-image: 
-    radial-gradient(2px 2px at 20px 30px, #fff, transparent),
-    radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
-    radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.6), transparent),
-    radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.4), transparent),
-    radial-gradient(2px 2px at 160px 30px, rgba(255,255,255,0.7), transparent);
+    radial-gradient(2px 2px at 50px 60px, rgba(255,255,255,0.9), transparent),
+    radial-gradient(1px 1px at 150px 30px, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1px 1px at 300px 120px, rgba(255,255,255,0.5), transparent),
+    radial-gradient(2px 2px at 400px 80px, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 200px 150px, rgba(255,255,255,0.6), transparent);
   background-repeat: repeat;
-  background-size: 200px 100px;
-  animation: sparkle 20s linear infinite;
+  background-size: 500px 200px;
+  animation: starTwinkle 8s linear infinite;
   pointer-events: none;
   z-index: 1;
 }
 
-@keyframes sparkle {
-  from { transform: translateY(0px); }
-  to { transform: translateY(-100px); }
+@keyframes starTwinkle {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
 }
 
 /* Card */
 .card {
-  background: rgba(10, 11, 46, 0.85);
-  backdrop-filter: blur(20px);
+  background: rgba(5, 5, 25, 0.95);
   border-radius: 20px;
   padding: 40px;
   width: 100%;
-  max-width: 480px;
-  border: 3px solid transparent;
-  background-clip: padding-box;
+  max-width: 450px;
   position: relative;
   z-index: 2;
   transition: all 0.4s ease;
+  border: 4px solid transparent;
 }
 
-/* Neon border effect */
+/* Neon border effect - much more prominent */
 .card::before {
   content: '';
   position: absolute;
-  top: -3px;
-  left: -3px;
-  right: -3px;
-  bottom: -3px;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
   background: linear-gradient(45deg, 
     #00ffff 0%, 
-    #0080ff 25%, 
-    #8000ff 50%, 
-    #ff0080 75%, 
+    #0099ff 12.5%, 
+    #3366ff 25%, 
+    #6633ff 37.5%,
+    #9900ff 50%, 
+    #ff0099 62.5%,
+    #ff3366 75%, 
+    #ff6600 87.5%,
     #00ffff 100%);
   border-radius: 20px;
   z-index: -1;
-  animation: neonRotate 4s linear infinite;
+  animation: neonBorderRotate 3s linear infinite;
+  filter: blur(1px);
 }
 
-@keyframes neonRotate {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* Inner glow */
+/* Much brighter inner glow */
 .card::after {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(ellipse at center, rgba(0,255,255,0.1) 0%, transparent 70%);
-  border-radius: 20px;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  background: linear-gradient(45deg, 
+    rgba(0,255,255,0.3) 0%, 
+    rgba(0,153,255,0.2) 25%,
+    rgba(153,0,255,0.2) 50%, 
+    rgba(255,0,153,0.2) 75%,
+    rgba(0,255,255,0.3) 100%);
+  border-radius: 16px;
   pointer-events: none;
+  z-index: -1;
+  animation: neonBorderRotate 3s linear infinite reverse;
+  opacity: 0.6;
+}
+
+@keyframes neonBorderRotate {
+  0% { transform: rotate(0deg); filter: blur(1px) brightness(1); }
+  25% { filter: blur(0.5px) brightness(1.2); }
+  50% { transform: rotate(180deg); filter: blur(1px) brightness(1); }
+  75% { filter: blur(0.5px) brightness(1.2); }
+  100% { transform: rotate(360deg); filter: blur(1px) brightness(1); }
 }
 
 /* Analyzing state */
@@ -96,12 +109,22 @@
 }
 
 .card.analyzing::before {
-  animation: neonRotate 1s linear infinite, neonPulse 2s ease-in-out infinite alternate;
+  animation: neonBorderRotate 1s linear infinite, neonAnalyzing 1.5s ease-in-out infinite alternate;
 }
 
-@keyframes neonPulse {
-  0% { filter: brightness(1) drop-shadow(0 0 10px #00ffff); }
-  100% { filter: brightness(1.5) drop-shadow(0 0 30px #00ffff); }
+.card.analyzing::after {
+  animation: neonBorderRotate 1s linear infinite reverse, neonAnalyzing 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes neonAnalyzing {
+  0% { 
+    filter: blur(1px) brightness(1.5) drop-shadow(0 0 20px #00ffff); 
+    opacity: 0.8;
+  }
+  100% { 
+    filter: blur(0.5px) brightness(2) drop-shadow(0 0 40px #00ffff); 
+    opacity: 1;
+  }
 }
 
 /* Title */
@@ -127,25 +150,24 @@
   height: 140px;
   padding: 16px;
   border-radius: 12px;
-  border: 2px solid rgba(0, 255, 255, 0.3);
-  background: rgba(10, 11, 46, 0.7);
+  border: 2px solid rgba(0, 136, 255, 0.4);
+  background: rgba(5, 5, 25, 0.8);
   color: #ffffff;
   font-size: 14px;
   resize: none;
   font-family: inherit;
-  backdrop-filter: blur(10px);
   transition: all 0.3s ease;
 }
 
 .textarea::placeholder {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .textarea:focus {
   outline: none;
-  border-color: #00ffff;
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
-  background: rgba(10, 11, 46, 0.9);
+  border-color: #00bbff;
+  box-shadow: 0 0 20px rgba(0, 187, 255, 0.5);
+  background: rgba(5, 5, 25, 0.95);
 }
 
 /* Button */
@@ -156,16 +178,18 @@
   padding: 16px;
   border: none;
   border-radius: 12px;
-  background: linear-gradient(135deg, #00ffff 0%, #0080ff 50%, #8000ff 100%);
+  background: linear-gradient(135deg, #0088ff 0%, #00bbff 50%, #00ffff 100%);
   color: white;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 1px;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 136, 255, 0.4);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 .button::before {
@@ -175,8 +199,8 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-  transition: left 0.5s ease;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+  transition: left 0.6s ease;
 }
 
 .button:hover::before {
@@ -184,14 +208,16 @@
 }
 
 .button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(0, 255, 255, 0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(0, 136, 255, 0.6);
+  background: linear-gradient(135deg, #00aaff 0%, #00ddff 50%, #00ffff 100%);
 }
 
 .button:disabled {
-  opacity: 0.7;
+  opacity: 0.6;
   cursor: not-allowed;
   transform: none;
+  box-shadow: 0 0 10px rgba(0, 136, 255, 0.2);
 }
 
 .button:disabled:hover::before {
@@ -233,16 +259,26 @@
 
 /* Fraud */
 .fraud {
-  background: rgba(220, 38, 38, 0.2);
-  color: #ff6b6b;
-  border-color: #dc2626;
-  box-shadow: 0 0 20px rgba(220, 38, 38, 0.3);
-  animation: resultAppear 0.5s ease-out, fraudPulse 2s ease-in-out infinite alternate;
+  background: rgba(180, 20, 20, 0.3);
+  color: #ff4444;
+  border-color: #cc0000;
+  box-shadow: 0 0 25px rgba(180, 20, 20, 0.5);
+  animation: resultAppear 0.5s ease-out, fraudAlert 1.5s ease-in-out infinite alternate;
+  border-width: 3px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-@keyframes fraudPulse {
-  0% { box-shadow: 0 0 20px rgba(220, 38, 38, 0.3); }
-  100% { box-shadow: 0 0 30px rgba(220, 38, 38, 0.6); }
+@keyframes fraudAlert {
+  0% { 
+    box-shadow: 0 0 25px rgba(180, 20, 20, 0.5);
+    border-color: #cc0000;
+  }
+  100% { 
+    box-shadow: 0 0 40px rgba(255, 68, 68, 0.8);
+    border-color: #ff4444;
+  }
 }
 
 /* Safe */
@@ -295,7 +331,13 @@
 
 /* Additional glow effects */
 .card:hover::before {
-  animation: neonRotate 2s linear infinite;
+  animation: neonBorderRotate 1.5s linear infinite;
+  filter: blur(0.5px) brightness(1.3);
+}
+
+.card:hover::after {
+  animation: neonBorderRotate 1.5s linear infinite reverse;
+  opacity: 0.8;
 }
 
 /* Smooth scrolling for any overflow */
