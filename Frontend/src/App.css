@@ -50,7 +50,7 @@
   border: 4px solid transparent;
 }
 
-/* Neon border effect - much more prominent */
+/* Neon border effect - static glow like in reference */
 .card::before {
   content: '';
   position: absolute;
@@ -59,22 +59,18 @@
   right: -4px;
   bottom: -4px;
   background: linear-gradient(45deg, 
-    #00ffff 0%, 
-    #0099ff 12.5%, 
-    #3366ff 25%, 
-    #6633ff 37.5%,
-    #9900ff 50%, 
-    #ff0099 62.5%,
-    #ff3366 75%, 
-    #ff6600 87.5%,
-    #00ffff 100%);
+    #00aaff 0%, 
+    #0088ff 25%, 
+    #0066ff 50%, 
+    #0088ff 75%,
+    #00aaff 100%);
   border-radius: 20px;
   z-index: -1;
-  animation: neonBorderRotate 3s linear infinite;
-  filter: blur(1px);
+  filter: blur(1px) brightness(1.2);
+  box-shadow: 0 0 30px rgba(0, 170, 255, 0.8);
 }
 
-/* Much brighter inner glow */
+/* Static inner glow */
 .card::after {
   content: '';
   position: absolute;
@@ -82,25 +78,11 @@
   left: 2px;
   right: 2px;
   bottom: 2px;
-  background: linear-gradient(45deg, 
-    rgba(0,255,255,0.3) 0%, 
-    rgba(0,153,255,0.2) 25%,
-    rgba(153,0,255,0.2) 50%, 
-    rgba(255,0,153,0.2) 75%,
-    rgba(0,255,255,0.3) 100%);
+  background: rgba(0, 170, 255, 0.1);
   border-radius: 16px;
   pointer-events: none;
   z-index: -1;
-  animation: neonBorderRotate 3s linear infinite reverse;
-  opacity: 0.6;
-}
-
-@keyframes neonBorderRotate {
-  0% { transform: rotate(0deg); filter: blur(1px) brightness(1); }
-  25% { filter: blur(0.5px) brightness(1.2); }
-  50% { transform: rotate(180deg); filter: blur(1px) brightness(1); }
-  75% { filter: blur(0.5px) brightness(1.2); }
-  100% { transform: rotate(360deg); filter: blur(1px) brightness(1); }
+  box-shadow: inset 0 0 30px rgba(0, 170, 255, 0.3);
 }
 
 /* Analyzing state */
@@ -109,21 +91,21 @@
 }
 
 .card.analyzing::before {
-  animation: neonBorderRotate 1s linear infinite, neonAnalyzing 1.5s ease-in-out infinite alternate;
+  animation: neonPulse 1.5s ease-in-out infinite alternate;
 }
 
 .card.analyzing::after {
-  animation: neonBorderRotate 1s linear infinite reverse, neonAnalyzing 1.5s ease-in-out infinite alternate;
+  animation: neonPulse 1.5s ease-in-out infinite alternate;
 }
 
-@keyframes neonAnalyzing {
+@keyframes neonPulse {
   0% { 
-    filter: blur(1px) brightness(1.5) drop-shadow(0 0 20px #00ffff); 
-    opacity: 0.8;
+    filter: blur(1px) brightness(1.2);
+    box-shadow: 0 0 30px rgba(0, 170, 255, 0.8);
   }
   100% { 
-    filter: blur(0.5px) brightness(2) drop-shadow(0 0 40px #00ffff); 
-    opacity: 1;
+    filter: blur(0.5px) brightness(1.5);
+    box-shadow: 0 0 50px rgba(0, 170, 255, 1);
   }
 }
 
@@ -331,13 +313,12 @@
 
 /* Additional glow effects */
 .card:hover::before {
-  animation: neonBorderRotate 1.5s linear infinite;
-  filter: blur(0.5px) brightness(1.3);
+  filter: blur(0.5px) brightness(1.4);
+  box-shadow: 0 0 40px rgba(0, 170, 255, 1);
 }
 
 .card:hover::after {
-  animation: neonBorderRotate 1.5s linear infinite reverse;
-  opacity: 0.8;
+  box-shadow: inset 0 0 40px rgba(0, 170, 255, 0.4);
 }
 
 /* Smooth scrolling for any overflow */
