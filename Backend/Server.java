@@ -4,15 +4,19 @@ import com.sun.net.httpserver.Headers;
 
 import java.io.*;
 import java.net.*;
+import java.net.URI;
 
 public class Server {
 
-    static String GEMINI_API_KEY = "API_KEY_HERE";
+    static String GEMINI_API_KEY = System.getenv("GEMINI_API_KEY");
 
     public static void main(String[] args) throws Exception {
 
-        if (GEMINI_API_KEY == null || GEMINI_API_KEY.isEmpty()) {
-            System.out.println(" GEMINI_API_KEY not set");
+        if (GEMINI_API_KEY == null || GEMINI_API_KEY.isEmpty() || "API_KEY_HERE".equals(GEMINI_API_KEY)) {
+            System.out.println("❌ GEMINI_API_KEY environment variable not set!");
+            System.out.println("Please set your Gemini API key:");
+            System.out.println("Windows: set GEMINI_API_KEY=your_api_key_here");
+            System.out.println("Linux/Mac: export GEMINI_API_KEY=your_api_key_here");
             return;
         }
 
@@ -129,10 +133,11 @@ public class Server {
     // -------------------- GEMINI API CALL --------------------
     private static String callGemini(String userMessage) throws Exception {
 
-        URL url = new URL(
+        URI uri = new URI(
             "https://generativelanguage.googleapis.com/v1beta/models/" +
             "gemini-2.5-flash:generateContent?key=" + GEMINI_API_KEY
         );
+        URL url = uri.toURL();
 
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
